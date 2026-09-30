@@ -1,0 +1,167 @@
+.kboard-scroll {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 12px;
+  box-sizing: border-box;
+}
+
+/* Scrollbar siempre visible (no depender de hover/auto-hide del SO) */
+.kboard-scroll::-webkit-scrollbar {
+  height: 10px;
+}
+.kboard-scroll::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary, #f1f5f9);
+  border-radius: 6px;
+}
+.kboard-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted, #94a3b8);
+  border-radius: 6px;
+}
+.kboard-scroll {
+  scrollbar-width: thin;
+}
+
+.kboard-columns {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  min-height: 200px;
+}
+
+.kboard-column {
+  flex: 0 0 280px;
+  background: var(--color-bg-secondary, #f8fafc);
+  border-radius: 10px;
+  border: 1px solid var(--glass-border, #e2e8f0);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 320px);
+}
+
+.kboard-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--glass-border, #e2e8f0);
+}
+
+.kboard-column-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-primary, #1e293b);
+}
+
+.kboard-column-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-muted, #64748b);
+  background: var(--color-bg-tertiary, #eef2f7);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.kboard-column-body {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.kboard-empty {
+  font-size: 12px;
+  color: var(--color-text-muted, #94a3b8);
+  text-align: center;
+  padding: 16px 0;
+}
+
+.kboard-card {
+  background: var(--color-bg-main, #fff);
+  border: 1px solid var(--glass-border, #e2e8f0);
+  border-left: 3px solid #94a3b8;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.kboard-card:hover {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.kboard-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary, #1e293b);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.kboard-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.kboard-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.kboard-blocked-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #b45309;
+  background: rgba(245, 158, 11, 0.12);
+  padding: 3px 7px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.kboard-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.kboard-card-comments {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--color-text-muted, #64748b);
+}
+
+.kboard-card-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-primary, #0066CC);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.kboard-card-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

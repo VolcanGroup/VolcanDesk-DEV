@@ -1,0 +1,363 @@
+/* ===== RICH TEXT EDITOR ===== */
+.rte-wrapper {
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-secondary);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.rte-wrapper:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+}
+
+.rte-wrapper.note-mode:focus-within {
+    border-color: var(--color-warning);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+}
+
+/* Toolbar */
+.rte-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 10px;
+    background: var(--color-bg-primary);
+    border-bottom: 1px solid var(--glass-border);
+    flex-wrap: wrap;
+}
+
+.rte-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 28px;
+    transition: all 0.15s;
+    font-family: var(--font-family);
+}
+
+.rte-btn:hover {
+    background: var(--color-bg-hover);
+    color: var(--color-text-primary);
+}
+
+.rte-btn.active {
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--color-primary-light);
+}
+
+.rte-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--glass-border);
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+.rte-select {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--glass-border);
+    color: var(--color-text-secondary);
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: 12px;
+    cursor: pointer;
+    height: 28px;
+    width: auto;
+}
+
+/* Editor ContentEditable — antes 130/320px, muy chico para lo que se suele
+   escribir (reportado en vivo 2026-09-18, sobre todo en "Descripción" del
+   formulario de nueva solicitud). El overlay de Respuesta (TicketDetailView.css
+   .reply-editor-container) tiene su propio override para llenar casi todo el
+   panel — este tamaño base es el que aplica en el resto de usos. */
+.rte-editor {
+    min-height: 180px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 12px 14px;
+    outline: none;
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-family: var(--font-family);
+}
+
+.rte-editor:empty::before {
+    content: attr(data-placeholder);
+    color: var(--color-text-muted);
+    pointer-events: none;
+}
+
+/* Antes sin margin/list-style explícitos — el navegador aplicaba su margen
+   por defecto (típicamente 1em arriba/abajo), dando un espaciado irregular al
+   elegir viñetas/numeración (reportado en vivo 2026-09-18). */
+.rte-editor ul,
+.rte-editor ol {
+    padding-left: 22px;
+    margin: 4px 0;
+}
+
+.rte-editor ul {
+    list-style-type: disc;
+}
+
+.rte-editor ol {
+    list-style-type: decimal;
+}
+
+.rte-editor li {
+    margin-bottom: 2px;
+}
+
+/* Pasted images inside editor */
+.rte-editor img {
+    max-width: 100%;
+    max-height: 220px;
+    border-radius: 6px;
+    border: 1px solid var(--glass-border);
+    margin: 6px 0;
+    display: block;
+}
+
+/* @mention chip */
+.mention-chip {
+    display: inline-block;
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--color-primary-light);
+    border-radius: 4px;
+    padding: 0 4px;
+    font-weight: 600;
+    cursor: default;
+    user-select: none;
+}
+
+/* Mention Dropdown */
+.mention-dropdown {
+    position: absolute;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 2000;
+    min-width: 200px;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.mention-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.mention-option:hover,
+.mention-option.selected {
+    background: var(--color-bg-hover);
+}
+
+.mention-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mention-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+}
+
+.mention-role-tag {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+}
+
+/* Paste preview images */
+.rte-attachment-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 14px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(0,0,0,0.1);
+}
+
+.rte-attachment-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--glass-border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+}
+
+.rte-attachment-chip button {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 0;
+    width: auto;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.rte-attachment-chip button:hover {
+    color: var(--color-error);
+}
+
+/* Image thumbnail preview */
+.rte-img-thumb {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--glass-border);
+}
+
+/* ===== Compositor compacto estilo WhatsApp/Slack (2026-09-24) ===== */
+/* .rte-wrapper sin borde propio en modo compacto — el borde/fondo ya lo da
+   .reply-panel (TicketDetailView.css); evita un doble marco. */
+.rte-wrapper.rte-compact {
+    border: none;
+    background: transparent;
+    /* La base (.rte-wrapper) trae overflow:hidden para recortar el borde
+       redondeado del editor grande — en compacto eso recorta los popovers de
+       emoji/plantillas, que son descendientes de este wrapper y se
+       posicionan por ENCIMA de él (bottom: calc(100% + 8px)). */
+    overflow: visible;
+}
+.rte-wrapper.rte-compact:focus-within {
+    box-shadow: none;
+}
+
+.rte-quick-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.rte-quick-tools {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    padding-bottom: 4px;
+}
+
+/* Editor de 1 línea que crece con el texto — el contentEditable ya crece
+   solo con su contenido; aquí solo se acota el piso/techo para que en reposo
+   sea una sola línea y no pase de ~140px antes de scrollear internamente. */
+.rte-editor.rte-editor-compact {
+    flex: 1;
+    min-height: 22px;
+    max-height: 140px;
+    padding: 8px 4px;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    transition: max-height 0.15s ease;
+}
+
+/* Modo expandido (2026-09-24) — para respuestas largas/informes formales,
+   alternado con el botón ⛶ de .reply-bar-top. Mismo contentEditable, solo
+   cambia el techo — el texto ya escrito no se pierde al alternar. */
+.rte-editor.rte-editor-compact.rte-editor-expanded {
+    min-height: 220px;
+    max-height: 55vh;
+}
+
+.rte-aa-toggle {
+    flex-shrink: 0;
+    align-self: flex-end;
+    margin-bottom: 4px;
+}
+
+.rte-popover-anchor {
+    position: relative;
+}
+
+.rte-popover {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 2000;
+    padding: 8px;
+}
+
+.rte-emoji-popover {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    width: 180px;
+}
+
+.rte-emoji-option {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.15rem;
+    padding: 6px;
+    border-radius: 6px;
+    line-height: 1;
+}
+
+.rte-emoji-option:hover {
+    background: var(--color-bg-hover);
+}
+
+.rte-quick-replies-popover {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 260px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.rte-quick-reply-option {
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--color-text-secondary);
+    line-height: 1.35;
+}
+
+.rte-quick-reply-option:hover {
+    background: var(--color-bg-hover);
+    color: var(--color-text-primary);
+}

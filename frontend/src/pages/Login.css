@@ -1,0 +1,224 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: var(--spacing-lg);
+    background: #F5F5F7;
+}
+
+.login-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: url('/Fondo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* sin overlay — fondo blanco limpio */
+
+.login-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 450px;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-2xl);
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.06),
+        0 8px 24px rgba(0, 0, 0, 0.10),
+        0 20px 48px rgba(0, 0, 0, 0.08);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.login-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.login-logo img {
+    width: 220px; /* Un poco más grande para dar protagonismo a VOLCÁN */
+    height: auto;
+    object-fit: contain;
+}
+
+.fade-in-volcan {
+    opacity: 0;
+    animation: loginFadeIn 0.8s ease-out forwards;
+}
+
+.fade-in-voltik {
+    opacity: 0;
+    font-size: var(--font-size-lg); /* Más pequeño, no protagonista */
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+    color: #4A4A4A; /* Color sutil, no compite */
+    animation: loginFadeIn 0.8s ease-out forwards;
+    animation-delay: 400ms;
+}
+
+.fade-in-instructions {
+    opacity: 0;
+    color: #8E8E93;
+    font-size: var(--font-size-sm);
+    margin: 0;
+    animation: loginFadeIn 0.8s ease-out forwards;
+    animation-delay: 400ms;
+}
+
+@keyframes loginFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.login-form {
+    margin-bottom: var(--spacing-xl);
+}
+
+.login-error {
+    padding: var(--spacing-md);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--color-error);
+    border-radius: var(--radius-md);
+    color: var(--color-error);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-lg);
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: var(--spacing-md);
+    color: var(--color-text-muted);
+    pointer-events: none;
+}
+
+.input-with-icon input {
+    padding-left: calc(var(--spacing-md) + 24px);
+    background-color: #FFFFFF;
+    color: #1D1D1F;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+}
+
+.input-with-icon input::placeholder {
+    color: #8E8E93;
+}
+
+.login-form label {
+    color: #1D1D1F;
+}
+
+.login-form .btn-primary {
+    background-color: #007AFF;
+    color: #FFFFFF;
+    border: none;
+}
+
+.login-form .btn-primary:hover {
+    background-color: #005bb5;
+}
+
+.login-forgot-back {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: none;
+    border: none;
+    color: #007AFF;
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-md);
+    cursor: pointer;
+    padding: var(--spacing-xs);
+}
+
+.login-forgot-back:hover {
+    text-decoration: underline;
+}
+
+.login-demo {
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--glass-border);
+    text-align: center;
+}
+
+.demo-credentials {
+    margin-top: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-xs);
+    color: #8E8E93;
+}
+
+.demo-credentials strong {
+    color: #007AFF;
+}
+
+/* Redes Sociales Footer */
+.login-footer-social {
+    margin-top: var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    color: #8E8E93;
+    animation: loginFadeIn 0.8s ease-out forwards;
+    animation-delay: 600ms;
+    opacity: 0;
+}
+
+.social-text {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    color: #0077b5; /* Color corporativo de LinkedIn */
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.social-link:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}

@@ -1,0 +1,201 @@
+/* Mismo tratamiento que .kboard-scroll en KanbanBoard.css (ya probado y
+   funcionando ahí) — dos intentos anteriores (2026-09-07) con solo
+   overflow:auto/min-width:0 seguían sin verse: hacía falta también un
+   width/max-width:100% explícito (sin eso, el ancho intrínseco de las filas
+   de 900px+ podía seguir empujando hacia el padre en vez de quedarse acotado
+   aquí) y, sobre todo, FORZAR la barra de scroll a visible — Windows/Chrome la
+   esconde por default (estilo "overlay", solo aparece al pasar el mouse
+   encima de la zona exacta), así que aunque el scroll funcionara, no había
+   ninguna pista visual de que existiera. */
+.ticket-table-container{background:#fff;border:1px solid #dfe5ee;border-radius:10px;overflow:auto;min-width:0;width:100%;max-width:100%;box-sizing:border-box}
+.ticket-table-container::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+.ticket-table-container::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary, #f1f5f9);
+  border-radius: 6px;
+}
+.ticket-table-container::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted, #94a3b8);
+  border-radius: 6px;
+}
+.ticket-table-container {
+  scrollbar-width: thin;
+}.proposal-table-head,.proposal-ticket-row{display:grid;grid-template-columns:minmax(320px,2.4fr) 130px 170px 135px 110px 18px;align-items:center}.proposal-table-head{height:40px;padding:0 18px;color:#475569;background:#fbfcfe;border-bottom:1px solid #dfe5ee;text-transform:uppercase;letter-spacing:.04em;font-size:11px;font-weight:700}.proposal-ticket-row{width:100%;min-height:76px;padding:0 18px;background:#fff;border:0;border-bottom:1px solid #e5eaf1;text-align:left;color:#40506a;font:inherit;cursor:pointer;position:relative}.proposal-ticket-row:last-child{border-bottom:0}.proposal-ticket-row:hover{background:#f8faff}.priority-mark{position:absolute;left:19px;width:7px;height:7px;border-radius:50%;background:#d49a00}.priority-mark.urgent{background:#d73543}.priority-mark.high{background:#d57a00}.priority-mark.low{background:#8b97a9}.proposal-ticket-name{padding-left:0px}.proposal-ticket-name strong{display:block;color:#162033;font-size:12px;margin-bottom:6px}.proposal-ticket-name small{display:block;color:#8592a6;font-size:10px}.status-pill{display:inline-block;font-style:normal;font-size:10px;font-weight:700;padding:6px 9px;border-radius:6px;background:#edf4ff;color:#1664c9}.status-in-progress{background:#fff3dd;color:#955c00}.status-resolved{background:#eaf8f0;color:#237a48}.status-closed{background:#f0f0f5;color:#5b597b}.sla-copy{font-size:11px;color:#25814d}.sla-copy b{display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:currentColor}.sla-copy.warning{color:#a96d00}.sla-copy.breached{color:#d52e3d}.unassigned{color:#ab6400;font-weight:600}.update-copy{color:#77859a;font-size:11px}.row-arrow{font-size:19px;color:#93a0b2}.proposal-empty{padding:54px;text-align:center}.proposal-empty strong,.proposal-empty span{display:block}.proposal-empty span{color:#8491a6;margin-top:5px}@media(max-width:1050px){.proposal-table-head,.proposal-ticket-row{grid-template-columns:minmax(280px,2fr) 120px 150px 18px}.proposal-table-head span:nth-child(4),.proposal-table-head span:nth-child(5),.proposal-ticket-row>span:nth-last-child(3),.proposal-ticket-row>span:nth-last-child(2){display:none}}@media(max-width:700px){.proposal-table-head{display:none}.proposal-ticket-row{grid-template-columns:1fr auto;gap:10px;padding:16px 18px}.proposal-ticket-name{padding-left:14px}.proposal-ticket-row>span:not(.proposal-ticket-name):not(.status-pill):not(.row-arrow),.proposal-ticket-row .sla-copy,.proposal-ticket-row>span:nth-last-child(3),.proposal-ticket-row>span:nth-last-child(2){display:none}}
+
+
+
+/* Tickets recién creados (Pendiente + sin responsable) — se resaltan con un
+   tono ámbar distinto del azul de "esperando respuesta" para que no se
+   confundan como el mismo tipo de alerta; son cosas distintas: uno es "nadie
+   lo ha tomado todavía", el otro es "ya se está trabajando, toca esperar". */
+
+
+.status-pill.status-new-unassigned {
+  background: #fef3e2;
+  color: #9a5b00;
+}
+
+.proposal-ticket-row.action-required-highlight {
+  background-color: rgba(34, 197, 94, 0.04);
+  box-shadow: inset 3px 0 0 0 #22c55e;
+}
+.proposal-ticket-row.action-required-highlight:hover {
+  background-color: rgba(34, 197, 94, 0.08) !important;
+}
+
+/* Ticket bloqueado/pausado — se desvanece en vez de usar otro color de
+   resaltado, para que se note de un vistazo que está en pausa sin competir
+   visualmente con los que sí necesitan acción. */
+.proposal-ticket-row.row-paused {
+  opacity: 0.5;
+}
+.proposal-ticket-row.row-paused:hover {
+  opacity: 0.85;
+}
+.sla-copy.sla-paused {
+  color: #dc2626 !important;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+/* La vista "Todos" de Volcán Desk unificó las columnas a un set de 11 que no
+   cabe en pantallas chicas (ej. una laptop). El scroll horizontal vive
+   directamente en .ticket-table-container (ver su regla arriba: overflow:auto
+   + min-width:0) — un wrapper interno aparte se probó primero (2026-09-07)
+   pero su propia barra de scroll quedaba al fondo de TODAS las filas,
+   invisible/inalcanzable en pantallas chicas sin bajar primero toda la
+   página; puesto aquí, la barra queda dentro del alto visible siempre
+   (.ticket-table-container ya está acotado por flex:1 al alto disponible,
+   heredado de Tickets.css). */
+.proposal-table-head,
+.proposal-ticket-row {
+  min-width: 900px;
+  /* Antes el overflow:hidden recortaba en silencio cualquier contenido que no
+     cupiera en su celda (ej. el texto del SLA envolviendo a una segunda
+     línea) — al quitarlo para permitir el scroll horizontal, ese desborde se
+     volvió visible, "derramándose" fuera de la fila (reportado en vivo
+     2026-09-07). Se repone aquí, por fila, para que nada se salga de su celda
+     sin bloquear el scroll de .ticket-table-container. */
+  overflow: hidden;
+}
+.sla-copy {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── Volcán Desk: tabla rediseñada 2026-09-07 (a partir de un mockup del
+   usuario) — columnas consolidadas (Detalle / Estado & Sub-estado / Asignado
+   con avatar / SLA con semántica de color correcta), en vez de las ~11
+   columnas planas de antes. Solo aplica cuando isDesk=true; Voltik sigue
+   usando .proposal-table-head/.proposal-ticket-row sin cambios. ───────────── */
+/* grid-template-columns con minmax(Npx, Mfr) — 2026-09-08, dos vueltas:
+   1) Con fr/minmax, cada fila (grid independiente, no comparten una tabla
+      maestra) calculaba su propia columna según el contenido intrínseco
+      (título/SLA largos empujaban la celda) y las columnas quedaban en
+      posiciones distintas entre filas — "descuadrado" (reportado en vivo).
+   2) El primer intento de arreglarlo cambió a anchos FIJOS en px — sí quedó
+      simétrico, pero la tabla dejó de estirarse a lo ancho de la pantalla y
+      se veía apretada/recortada a la izquierda en monitores anchos (también
+      reportado en vivo).
+   La causa real de (1) no era usar fr/minmax — era que el CONTENIDO no tenía
+   overflow:hidden/ellipsis, así que un grid track con contenido sin truncar
+   no puede encogerse por debajo de ese contenido aunque minmax() diga un
+   mínimo menor. Con overflow:hidden + min-width:0 en cada celda (ver abajo),
+   el contenido ya nunca "empuja" el track — el grid respeta el minmax()
+   declarado de forma consistente en todas las filas, y el fr sigue
+   estirándose para llenar el ancho disponible. */
+/* Solo "Detalle del Ticket" es flexible (absorbe todo el espacio sobrante en
+   pantallas anchas) — 2026-09-08, reportado en vivo: cuando Asignado/Estado/
+   SLA también tenían fr, en monitores anchos crecían más de lo que su
+   contenido corto necesitaba y quedaban con un hueco vacío incómodo a la
+   derecha del avatar/texto. Con ancho fijo, esas 3 columnas se quedan del
+   tamaño justo para su contenido (con el mismo overflow:hidden de siempre
+   como red de seguridad) y el espacio extra siempre va a Detalle.
+   Revertido 2026-09-18 (mismo día): un intento de darle también fr/minmax a
+   Sub-estado y Clasificación (para que no se cortaran en monitores anchos)
+   reintrodujo EXACTAMENTE el descuadre de arriba — reportado en vivo con
+   capturas mostrando avatares/iconos de Asignado y SLA arrancando en una
+   posición X distinta en cada fila. Como cada fila es su propio grid
+   independiente, dos columnas fr a la vez ya no garantiza el mismo ancho en
+   todas — de vuelta a fijo para esas dos también, con un poco más de ancho
+   que el primer intento fijo (160/210) para aliviar el corte de texto largo. */
+.desk-table-head,.desk-ticket-row{display:grid;grid-template-columns:minmax(220px,1fr) 160px 130px 210px 180px 160px 36px;align-items:center;gap:12px;min-width:760px}
+.desk-table-head{height:44px;padding:0 18px;background:#fbfcfe;border-bottom:1px solid #dfe5ee;color:#475569;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.desk-ticket-row{width:100%;min-height:64px;padding:12px 18px;background:#fff;border:0;border-bottom:1px solid #eef1f6;text-align:left;color:#1e293b;font:inherit;cursor:pointer}
+.desk-ticket-row:hover{background:#f8faff}
+.desk-ticket-row.action-required-highlight{background-color:rgba(34,197,94,.04);box-shadow:inset 3px 0 0 0 #22c55e}
+.desk-ticket-row.action-required-highlight:hover{background-color:rgba(34,197,94,.08)}
+.desk-ticket-row.row-paused{opacity:.6}
+.desk-ticket-row.row-paused:hover{opacity:.9}
+.desk-col{display:flex;flex-direction:column;justify-content:center;min-width:0}
+.desk-col-detail{gap:2px;min-width:0}
+.desk-title-line{display:flex;align-items:center;gap:6px;min-width:0}
+/* Título en una sola línea con ellipsis (no wrap) — a propósito, para que la
+   ALTURA de cada fila también sea consistente, no solo el ancho de columna. */
+.desk-title-line strong{font-size:13px;font-weight:600;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.desk-col-detail small{font-size:11px;color:#8592a6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.desk-col-classification{gap:2px}
+.desk-classification-value{font-size:12.5px;font-weight:600;color:#1e293b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.desk-classification-sub{font-size:11px;color:#8592a6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.urgent-badge{display:inline-flex;align-items:center;padding:1px 6px;border-radius:4px;background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+/* Burbuja "Te toca responder" — reemplaza al punto azul suelto (reportado en
+   vivo 2026-09-29: "un punto no es suficiente, de hecho ni se nota"). Mismo
+   peso visual que .urgent-badge, en azul en vez de rojo, con un punto interno
+   en vez de texto en mayúsculas. Solo aparece cuando hasPendingAction es
+   true — no reemplaza al texto descriptivo (helperText) que ya existía. */
+.pending-reply-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:10px;background:#eaf2ff;color:#0052a3;border:1px solid #bcd9ff;font-size:10.5px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.pending-reply-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#0066cc;flex-shrink:0}
+.desk-subtitle-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
+.desk-col-status{gap:4px;align-items:flex-start;min-width:0;width:100%}
+.desk-status-badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid transparent;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.desk-status-sub{font-size:11px;color:#8592a6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;max-width:100%}
+.desk-status-sub-solo{font-size:12.5px;font-weight:500;color:#334155;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;display:block}
+.desk-col-created{font-size:12px;color:#475569;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* justify-content:flex-start explícito — sin esto hereda justify-content:center
+   de .desk-col (pensado para centrar VERTICALMENTE en su layout de columna
+   normal), que en flex-direction:row centra HORIZONTALMENTE en su lugar: un
+   nombre corto ("Rodrigo") quedaba más a la derecha que uno largo ("Jesus
+   Garcia"), viéndose como si la columna se "desalineara" fila por fila
+   (reportado en vivo 2026-09-18, con capturas marcando el corrimiento). */
+.desk-col-assigned{flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;min-width:0}
+.desk-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10.5px;font-weight:700;flex-shrink:0}
+.desk-assigned-name{font-size:12.5px;font-weight:500;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.desk-col-sla{flex-direction:row;align-items:center;justify-content:flex-start;gap:6px;font-size:12px;font-weight:600;min-width:0}
+.desk-sla-icon{font-size:15px;flex-shrink:0}
+.desk-sla-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+/* Semántica estricta pedida por el usuario: rojo SOLO vencido; verde a-tiempo
+   y finalizado (aunque se haya resuelto tarde, ya no es "urgente"); ámbar
+   pausado — antes "PAUSADO" y "Finalizado vencido" se pintaban en rojo, lo
+   que generaba una falsa sensación de alerta sobre algo ya resuelto o en espera. */
+.sla-visual-ok,.sla-visual-done{color:#059669}
+.sla-visual-warning{color:#d97706}
+.sla-visual-breached{color:#dc2626}
+.sla-visual-paused{color:#a16207}
+.desk-col-expand{display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:15px;cursor:pointer;padding:6px;border-radius:6px}
+.desk-col-expand:hover{background:#f1f5f9;color:#3b82f6}
+
+.desk-ticket-preview{background:#f8fafc;border-bottom:1px solid #eef1f6;padding:16px 18px;min-width:760px}
+.desk-preview-fields{display:flex;flex-wrap:wrap;gap:28px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:16px 20px}
+.desk-preview-fields>div{flex:1;min-width:150px}
+.desk-preview-label{display:block;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.desk-preview-value{font-size:13px;font-weight:600;color:#0f172a}
+.desk-preview-sub{font-size:11.5px;color:#8592a6;margin-top:1px}
+
+/* Headers de grupo (acordeón por estado) — antes con estilos inline en el JSX,
+   ahora centralizados aquí para Voltik/Desk por igual. */
+.ticket-group-header{display:flex;align-items:center;padding:10px 18px;background:#f8fafc;border-bottom:1px solid #e2e8f0;border-top:1px solid #e2e8f0;cursor:pointer;gap:8px;font-size:12.5px;font-weight:700;color:#334155}
+.ticket-group-header:hover{background:#f1f5f9}
+.ticket-group-header.collapsed{border-radius:0}
+.ticket-group-dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ticket-group-count{background:#e2e8f0;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:700;color:#64748b;margin-left:auto}
+.ticket-group-section+.ticket-group-section{margin-top:0}
+
+@media(max-width:900px){
+  .desk-table-head,.desk-ticket-row{grid-template-columns:minmax(180px,1fr) 130px 170px 150px 36px}
+  .desk-table-head span:nth-child(3),.desk-ticket-row .desk-col-created,
+  .desk-table-head span:nth-child(6),.desk-ticket-row .desk-col-sla{display:none}
+}

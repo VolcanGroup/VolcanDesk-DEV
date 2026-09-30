@@ -1,0 +1,636 @@
+.flow-config-container {
+    padding: 24px;
+    background: #f8fafc;
+    min-height: 100%;
+}
+
+.flow-header {
+    margin-bottom: 24px;
+}
+
+.flow-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.flow-back-btn:hover {
+    color: #1e293b;
+}
+
+.flow-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 8px 0 4px 0;
+}
+
+.flow-header p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+.flow-admin-warning {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fffbeb;
+    border: 1px solid #fef3c7;
+    color: #b45309;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-size: 13px;
+}
+
+.flow-tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 24px;
+}
+
+.flow-tab {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.flow-tab:hover {
+    color: #1e293b;
+}
+
+.flow-tab.active {
+    color: #0066CC;
+    border-bottom-color: #0066CC;
+}
+
+.flow-content {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 24px;
+}
+
+.flow-action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.flow-action-row h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.flow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.flow-card {
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 16px;
+    transition: all 0.2s ease;
+}
+
+.flow-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+.flow-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.flow-card-header h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+}
+
+.flow-card-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.flow-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.flow-card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flow-card-row .label {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.flow-card-row .value {
+    color: #334155;
+    font-weight: 600;
+}
+
+.flow-options-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.flow-option-chip {
+    background: #e2e8f0;
+    color: #475569;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.flow-rules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.flow-rule-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 16px 20px;
+    transition: all 0.2s ease;
+}
+
+.flow-rule-row:hover {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+}
+
+.flow-rule-row.inactive {
+    opacity: 0.65;
+}
+
+.flow-rule-info {
+    flex: 1;
+}
+
+.flow-rule-badge {
+    background: rgba(9, 132, 227, 0.1);
+    color: #0984e3;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.active {
+    background-color: #22c55e;
+}
+
+.status-dot.inactive {
+    background-color: #94a3b8;
+}
+
+.flow-rule-info strong {
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.flow-rule-info .separator {
+    margin: 0 8px;
+    color: #cbd5e1;
+}
+
+.flow-rule-info span {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.flow-rule-fields-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.flow-rule-field-chip {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.flow-rule-field-chip.required {
+    border-color: rgba(239, 68, 68, 0.2);
+    background: rgba(239, 68, 68, 0.03);
+    color: #ef4444;
+}
+
+.flow-rule-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.flow-empty-state {
+    padding: 40px 20px;
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* Modals */
+.flow-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    /* Sin esto, un modal más alto que la ventana (ej. Reglas de Flujo con
+       varios campos dinámicos marcados) tocaba directo el borde de la
+       pantalla en vez de dejar un margen, en pantallas chicas. */
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+.flow-modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 480px;
+    padding: 24px;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    /* Antes no tenía ningún límite de altura ni scroll — en una pantalla
+       chica, un formulario largo (sobre todo .flow-modal-large, "Reglas de
+       Flujo", que puede traer un checklist largo de campos) se recortaba
+       contra el borde de la ventana sin ninguna forma de llegar al resto,
+       incluidos los botones Guardar/Cancelar (mismo patrón de bug reportado
+       en vivo 2026-09-23 para el panel de Nota Privada/Responder). Mismo
+       límite que ya usa el modal genérico de la app (Modal.jsx/index.css). */
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.flow-modal-large {
+    max-width: 680px;
+}
+
+.flow-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.flow-modal-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.flow-modal-close {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.flow-modal-close:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.flow-form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.flow-form-group.check-inline {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.flow-form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.flow-form-group input[type="text"],
+.flow-form-group select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.flow-form-group input[type="text"]:focus,
+.flow-form-group select:focus {
+    border-color: #0066CC;
+}
+
+.form-help {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.flow-form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flow-modal-fields-selector {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.flow-selector-header {
+    display: grid;
+    grid-template-columns: 1fr 80px 100px 80px;
+    background: #f8fafc;
+    padding: 10px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.flow-selector-body {
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.flow-selector-item {
+    display: grid;
+    grid-template-columns: 1fr 80px 100px 80px;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+}
+
+.flow-selector-item:last-child {
+    border-bottom: none;
+}
+
+.flow-selector-item.selected {
+    background: rgba(0, 102, 204, 0.015);
+}
+
+.flow-selector-item .field-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.flow-selector-item .field-info strong {
+    color: #1e293b;
+}
+
+.flow-selector-item .checkbox-col {
+    display: flex;
+    justify-content: center;
+}
+
+.flow-selector-item .input-col {
+    display: flex;
+    justify-content: center;
+}
+
+.flow-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #0066CC;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #0052a3;
+}
+
+.btn-primary:disabled {
+    background: #cbd5e1;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.btn-outline {
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+}
+
+.btn-outline:hover {
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    padding: 4px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.btn-icon:hover {
+    background: #f1f5f9;
+    color: #334155;
+}
+
+.btn-icon.text-danger:hover {
+    background: #fef2f2;
+    color: #ef4444;
+}
+
+/* Compact table-row actions */
+.table-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.muted {
+    color: #64748b;
+}
+
+.text-danger {
+    color: #ef4444;
+}
+
+/* Tablas Responsivas para Flujos y Catálogos */
+.table-responsive-container {
+    width: 100%;
+    overflow-x: auto;
+    max-height: 650px;
+    overflow-y: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+}
+
+/* Custom Data Table */
+.custom-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem; /* Compact font size */
+    text-align: left;
+}
+
+.custom-data-table th,
+.custom-data-table td {
+    padding: 10px 14px; /* Compact padding */
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.custom-data-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #f8fafc;
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.custom-data-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.custom-data-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.custom-data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.custom-data-table tbody tr.inactive {
+    opacity: 0.65;
+}
+
+/* Scrollbar Customization */
+.table-responsive-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.table-responsive-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.table-responsive-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+

@@ -1,0 +1,826 @@
+/* ── Layout ──────────────────────────────────────────────────────────── */
+.tickets-layout {
+    display: flex;
+    height: calc(100vh - 64px); /* subtract header height */
+    overflow: hidden;
+}
+
+/* ── Filter Panel ─────────────────────────────────────────────────────── */
+/* Filter drawer overlay layout */
+.filter-overlay-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.3);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.filter-panel-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 400px;
+    background: #ffffff;
+    border-left: 1px solid #dfe5ee;
+    box-shadow: -8px 0 32px rgba(15, 23, 42, 0.12);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+.filter-panel-drawer .filter-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    border-bottom: 1px solid #dfe5ee;
+    background: #ffffff;
+}
+
+.filter-panel-drawer .filter-panel-title-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.filter-panel-drawer .filter-panel-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #172134;
+}
+
+.filter-panel-drawer .filter-panel-subtitle {
+    font-size: 0.8rem;
+    color: #6f7d93;
+}
+
+.filter-panel-drawer .filter-panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.filter-panel-drawer .filter-reset-btn {
+    background: none;
+    border: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #ef4444;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.filter-panel-drawer .filter-reset-btn:hover {
+    background: rgba(239, 68, 68, 0.08);
+}
+
+.filter-panel-drawer .filter-close-btn {
+    background: none;
+    border: none;
+    color: #6f7d93;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.filter-panel-drawer .filter-close-btn:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* Drawer scrollable body */
+.filter-panel-drawer .filter-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Sections */
+.filter-panel-drawer .filter-section {
+    border-bottom: none;
+}
+
+.filter-panel-drawer .filter-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.filter-panel-drawer .filter-section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #475569;
+}
+
+.filter-panel-drawer .filter-section-body {
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Footer apply button */
+.filter-panel-drawer .filter-apply-footer {
+    padding: 20px 24px;
+    border-top: 1px solid #dfe5ee;
+    background: #ffffff;
+}
+
+.filter-panel-drawer .filter-apply-btn {
+    width: 100%;
+    height: 46px;
+    background: #1267e8;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 12px rgba(18, 103, 232, 0.15);
+    transition: all 0.2s;
+}
+
+.filter-panel-drawer .filter-apply-btn:hover {
+    background: #0f52ba;
+    box-shadow: 0 6px 16px rgba(18, 103, 232, 0.25);
+}
+
+.filter-count-badge {
+    background: var(--color-primary);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 1px 6px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.filter-section {
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.filter-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.filter-section-header:hover {
+    background: var(--color-bg-hover);
+}
+
+.filter-section-title {
+    font-size: 0.70rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-chevron {
+    color: var(--color-text-muted);
+    transition: transform var(--transition-base);
+    flex-shrink: 0;
+}
+
+.filter-chevron.open {
+    transform: rotate(0deg);
+}
+
+.filter-chevron:not(.open) {
+    transform: rotate(-90deg);
+}
+
+.filter-section-body {
+    padding: 0 12px 10px;
+}
+
+.filter-active-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary);
+}
+
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    transition: background 0.15s;
+}
+
+.filter-checkbox:hover {
+    background: var(--color-bg-hover);
+    color: var(--color-text-primary);
+}
+
+.filter-checkbox input {
+    width: 14px;
+    min-width: 14px;
+    height: 14px;
+    margin: 0;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+    padding: 0;
+}
+
+.filter-chip-count {
+    margin-left: auto;
+    font-size: 0.7rem;
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+    border-radius: 10px;
+    padding: 1px 7px;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Quick Views */
+.quick-views {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.quick-view-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 7px 8px;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    transition: all 0.15s;
+    text-align: left;
+}
+
+.quick-view-item:hover {
+    background: var(--color-bg-hover);
+    color: var(--color-text-primary);
+}
+
+.quick-view-item.active {
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--color-primary-light);
+    font-weight: 600;
+}
+
+.quick-view-count {
+    font-size: 0.75rem;
+    background: var(--color-bg-tertiary);
+    border-radius: 10px;
+    padding: 1px 8px;
+    min-width: 24px;
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+.quick-view-item.active .quick-view-count {
+    background: rgba(139, 92, 246, 0.25);
+    color: var(--color-primary-light);
+}
+
+/* ── Main Content ─────────────────────────────────────────────────────── */
+.tickets-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.tickets-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px 12px;
+    border-bottom: 1px solid var(--glass-border);
+    flex-shrink: 0;
+}
+
+.tickets-header h1 {
+    margin: 0 0 2px;
+    font-size: 1.4rem;
+}
+
+/* Search bar */
+.tickets-search-bar {
+    padding: 12px 24px 8px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+}
+
+.search-box input {
+    padding-left: 40px;
+    padding-right: 36px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    width: 100%;
+    height: 40px;
+}
+
+.search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--color-bg-hover);
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    padding: 0;
+}
+
+/* Active filter chips */
+.active-filters-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.active-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: var(--color-primary-light);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.active-chip button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-primary-light);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    width: auto;
+    display: flex;
+    align-items: center;
+    opacity: 0.7;
+}
+
+.active-chip button:hover {
+    opacity: 1;
+}
+
+/* Table wrapper fills remaining height */
+.tickets-main .ticket-table-wrapper,
+.tickets-main > div:last-child {
+    flex: 1;
+    overflow: auto;
+    padding: 0 24px 24px;
+}
+
+/* ── Ticket detail (resets padding when opened) ───────────────────────── */
+.ticket-detail-wrapper {
+    height: calc(100vh - 64px);
+}
+
+/* ── Company cell ── */
+.company-cell {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    background: rgba(0, 102, 204, 0.08);
+    border-radius: 20px;
+    padding: 2px 10px;
+    white-space: nowrap;
+}
+
+/* ── Date Range Filter ── */
+.date-range-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.date-range-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.date-range-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+}
+
+.date-input {
+    width: 100%;
+    padding: 6px 8px;
+    font-size: 0.78rem;
+    background: var(--color-bg-primary);
+    border: 1px solid rgba(0,0,0,0.16);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    accent-color: var(--color-primary);
+}
+
+.date-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.15);
+    outline: none;
+}
+
+.date-range-sep {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    padding-bottom: 8px;
+    flex-shrink: 0;
+}
+
+.date-range-clear {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 5px;
+    background: none;
+    border: 1px dashed rgba(199, 0, 11, 0.3);
+    border-radius: var(--radius-sm);
+    color: var(--color-error);
+    font-size: 0.72rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s;
+}
+
+.date-range-clear:hover {
+    background: rgba(199, 0, 11, 0.06);
+}
+
+.date-range-hint {
+    font-size: 0.70rem;
+    color: var(--color-text-muted);
+    margin-top: 6px;
+    font-style: italic;
+}
+
+/* Structural reset for the proposal layout */
+.tickets-main{display:block!important;overflow-y:auto!important;padding:0 32px 32px!important}.tickets-header{position:static!important;display:flex!important;padding:34px 0 24px!important;border:0!important;align-items:flex-end!important}.tickets-header:before,.tickets-header:after{content:none!important}.tickets-header>div:first-child{display:block!important}.tickets-title-block h1{font-size:24px!important;font-weight:500!important;letter-spacing:-.025em;margin:0 0 7px!important;color:#172134}.tickets-title-block p{font-size:13px;color:#6f7d93;margin:0}.visible-count{display:flex!important;flex-direction:column;align-items:flex-end}.visible-count strong{font-size:18px;color:#172134}.visible-count span{font-size:10px;color:#7d899c}.tickets-search-bar{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;row-gap:8px!important;padding:0!important;gap:10px!important;align-items:center!important}.tickets-search-bar .search-box{flex:0 1 33%!important;min-width:200px!important;max-width:340px!important}.proposal-filter-button{flex:0 0 auto}.tickets-main>.ticket-table-container,.tickets-main>div:last-child{padding:0!important;overflow:hidden!important;margin-top:16px}.active-filters-chips{position:static!important;flex-basis:100%;order:3;margin:0!important}.tickets-search-bar:has(.active-filters-chips){flex-wrap:wrap}@media(max-width:768px){.tickets-main{padding:0 16px 24px!important}.visible-count{display:none!important}.proposal-quick-tabs{gap:18px;overflow-x:auto}}
+
+.tickets-layout{height:calc(100vh - 76px);background:#f5f7fa}.tickets-main{padding:0 32px 32px;overflow:auto}.tickets-header{padding:36px 0 24px;display:flex;align-items:flex-end;justify-content:space-between}.tickets-header>div:first-child{display:none}.tickets-header>div:nth-child(2){display:block!important}.tickets-header>div:nth-child(2) h1{font-size:24px;font-weight:500;letter-spacing:-.03em;margin:0 0 8px;color:#172134}.tickets-header>div:nth-child(2) p{color:#6f7d93;margin:0;font-size:13px}.tickets-header>div:last-child{display:none!important}.tickets-header:before{content:'Bandeja de tickets';font-size:24px;font-weight:500;color:#172134;position:absolute}.tickets-header:after{content:'Prioriza, asigna y da seguimiento desde un solo lugar.';font-size:13px;color:#6f7d93;position:absolute;margin-top:44px}.tickets-search-bar{padding:0;display:flex;align-items:center;gap:10px}.search-box{flex:1}.search-box input{height:44px;border-color:#d9e0ea;border-radius:9px;padding-left:42px}.proposal-filter-button{height:44px;padding:0 15px;background:#fff;border:1px solid #d9e0ea;border-radius:9px;color:#42516a;display:flex;align-items:center;gap:6px;cursor:pointer}.proposal-filter-button span{background:#1267e8;color:#fff;border-radius:10px;padding:1px 5px;font-size:9px}.proposal-quick-tabs{display:flex;gap:30px;margin-top:12px;border-bottom:1px solid #dfe5ee;height:45px;align-items:flex-end}.proposal-quick-tabs button{height:45px;border:0;border-bottom:2px solid transparent;background:transparent;color:#66758c;font-size:12px;cursor:pointer;padding:0 2px}.proposal-quick-tabs button.active{color:#10284a;font-weight:700;border-color:#1267e8}.proposal-quick-tabs b{font-size:9px;background:#feecef;color:#d52e3d;border-radius:10px;padding:2px 6px;margin-left:5px}.tickets-main>.ticket-table-container{margin-top:16px}.active-filters-chips{position:absolute;margin-top:56px}@media(max-width:768px){.tickets-main{padding:0 16px 24px}.tickets-header{padding-top:26px}.proposal-quick-tabs{gap:18px;overflow-x:auto}.tickets-header:before{font-size:21px}}
+
+/* --- Filter Drawer specific styles matching Bin Manager --- */
+.filter-panel-drawer {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 2-Column Grid matching Bin Manager */
+.filter-panel-drawer .filter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.filter-panel-drawer .filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-panel-drawer .filter-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+}
+
+.filter-panel-drawer .filter-select {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid #d9e0ea;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #1e293b;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.filter-panel-drawer .filter-select:focus {
+    outline: none;
+    border-color: #1267e8;
+    box-shadow: 0 0 0 3px rgba(18, 103, 232, 0.1);
+}
+
+/* Custom chevron icon style for selects */
+.filter-panel-drawer select.filter-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+    padding-right: 32px;
+}
+
+/* Specific styling to match the header font sizes of Bin Manager */
+.filter-panel-drawer .filter-panel-title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+}
+
+.filter-panel-drawer .filter-panel-subtitle {
+    font-size: 12px !important;
+    color: #64748b !important;
+}
+
+.filter-panel-drawer .filter-reset-btn {
+    font-size: 11px !important;
+    color: #64748b !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+.filter-panel-drawer .filter-reset-btn:hover {
+    color: #1e293b !important;
+    background: #f1f5f9 !important;
+}
+
+.filter-panel-drawer .filter-apply-btn {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    height: 48px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    border-radius: 8px !important;
+    background: #1267e8 !important;
+    box-shadow: 0 4px 12px rgba(18, 103, 232, 0.15) !important;
+}
+
+.filter-panel-drawer .filter-apply-btn:hover {
+    background: #0f52ba !important;
+}
+
+/* Column Selector Dropdown styles */
+.column-select-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.column-dropdown-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: transparent;
+}
+
+.column-dropdown-panel {
+    position: absolute;
+    right: 0;
+    top: 48px;
+    background: #ffffff;
+    border: 1px solid #dfe5ee;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 180px;
+    animation: slideDown 0.15s ease-out;
+}
+
+.column-dropdown-panel span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.column-dropdown-panel label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #334155;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 500;
+    padding: 2px 0;
+    transition: color 0.15s ease;
+}
+
+.column-dropdown-panel label:hover {
+    color: #0f172a;
+}
+
+.column-dropdown-panel input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Volcán Desk: pestañas de "mi relación con el ticket" (Mis solicitudes / Mi
+   atención / Todos) — un poco más prominentes que el resto para que se lean
+   como la decisión principal de la pantalla, con el selector de Estado debajo
+   como un criterio secundario en vez de una pestaña más al mismo nivel. */
+.desk-role-tabs {
+    margin-top: 16px;
+}
+.desk-role-tabs button {
+    font-size: 13.5px;
+    font-weight: 600;
+}
+.desk-role-tabs button.active {
+    font-weight: 800;
+}
+.desk-estado-row select.proposal-filter-button {
+    height: 34px;
+    padding: 0 10px;
+    font-size: 12px;
+}
+
+/* Jerarquía visual de 2 niveles para Volcán Desk (feedback ago 2026): el eje
+   principal (Solicitudes / Atención) queda arriba con el mismo estilo que las
+   demás pestañas; el alcance (Mías / De mi grupo) va debajo, más chico y con
+   corchetes literales para leerse como un sub-nivel dependiente del eje, no
+   como una pestaña más al mismo rango. */
+.desk-scope-tabs {
+    display: flex;
+    gap: 4px;
+    margin: 2px 0 0 4px;
+}
+.desk-scope-tabs button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #8a97ac;
+    padding: 3px 6px;
+    border-radius: 6px;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+.desk-scope-tabs button b {
+    font-weight: 700;
+}
+.desk-scope-tabs button.active {
+    color: #1d4ed8;
+    background: #eaf2fe;
+}
+.desk-scope-tabs button:hover:not(.active) {
+    color: #4b5768;
+}
+
+.desk-view-subtitle {
+    margin: 6px 0 0 4px;
+    font-size: 12.5px;
+    color: #66758c;
+}
+.desk-view-subtitle strong {
+    color: #384355;
+}
+
+/* Root cause del selector de Estado y del selector de alcance de exportación
+   viéndose gigantes (ancho de toda la fila en vez de ajustarse a su texto):
+   .proposal-filter-button trae display:flex, pensado para los <button> con
+   ícono+texto. Aplicado a un <select> nativo, Chrome reciente lo interpreta
+   como "customizable select" y descarta el ancho por contenido, estirándolo
+   a lo que le dé el contenedor flex padre. Todo <select> que use esta clase
+   (Estado, Agrupar por, alcance de exportación) debe quedar en
+   display:inline-block con ancho automático — nunca flex/grid — para
+   conservar el tamaño nativo por contenido. select.proposal-filter-button
+   (elemento+clase) tiene más especificidad que .proposal-filter-button solo,
+   así que gana sin necesitar !important. */
+select.proposal-filter-button {
+    display: inline-block;
+    width: auto;
+    flex: 0 0 auto;
+    appearance: auto;
+    -webkit-appearance: menulist;
+}
+
+/* Resaltado de la pestaña activa: antes solo se distinguía por el color de
+   texto y el borde inferior azul, poco notorio de un vistazo. Se agrega un
+   fondo azul muy suave + esquinas superiores redondeadas solo a la pestaña
+   activa (aplica tanto a las pestañas de Volcán Desk como a las de Voltik,
+   ambas comparten .proposal-quick-tabs). */
+.proposal-quick-tabs button {
+    padding: 0 10px;
+    border-radius: 8px 8px 0 0;
+    transition: background-color 0.15s ease;
+}
+.proposal-quick-tabs button.active {
+    background: #eaf2fe;
+}
+
+/* Badges: antes todos los números eran rojo sólido sin importar si la
+   pestaña estaba activa, lo que hacía que las inactivas compitieran
+   visualmente con la seleccionada. Ahora el badge de la pestaña activa se
+   mantiene rojo sólido con texto blanco (destaca, es la vista que se está
+   viendo), y los de las pestañas inactivas pasan a gris claro con texto
+   gris oscuro (informan sin gritar). Son solo contadores de relevancia, no
+   alertas críticas, así que no hay excepción que preservar en rojo siempre. */
+.proposal-quick-tabs b {
+    background: #eef1f6;
+    color: #5c6b82;
+    font-weight: 700;
+}
+.proposal-quick-tabs button.active b {
+    background: #d52e3d;
+    color: #fff;
+}

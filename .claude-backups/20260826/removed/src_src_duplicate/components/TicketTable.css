@@ -1,0 +1,24 @@
+.ticket-table-container{background:#fff;border:1px solid #dfe5ee;border-radius:10px;overflow:hidden}.proposal-table-head,.proposal-ticket-row{display:grid;grid-template-columns:minmax(320px,2.4fr) 130px 170px 135px 110px 18px;align-items:center}.proposal-table-head{height:40px;padding:0 18px;color:#8491a6;background:#fbfcfe;border-bottom:1px solid #dfe5ee;text-transform:uppercase;letter-spacing:.04em;font-size:10px;font-weight:700}.proposal-ticket-row{width:100%;min-height:76px;padding:0 18px;background:#fff;border:0;border-bottom:1px solid #e5eaf1;text-align:left;color:#40506a;font:inherit;cursor:pointer;position:relative}.proposal-ticket-row:last-child{border-bottom:0}.proposal-ticket-row:hover{background:#f8faff}.priority-mark{position:absolute;left:19px;width:7px;height:7px;border-radius:50%;background:#d49a00}.priority-mark.urgent{background:#d73543}.priority-mark.high{background:#d57a00}.priority-mark.low{background:#8b97a9}.proposal-ticket-name{padding-left:20px}.proposal-ticket-name strong{display:block;color:#162033;font-size:12px;margin-bottom:6px}.proposal-ticket-name small{display:block;color:#8592a6;font-size:10px}.status-pill{display:inline-block;font-style:normal;font-size:10px;font-weight:700;padding:6px 9px;border-radius:6px;background:#edf4ff;color:#1664c9}.status-in-progress{background:#fff3dd;color:#955c00}.status-resolved{background:#eaf8f0;color:#237a48}.status-closed{background:#f0f0f5;color:#5b597b}.sla-copy{font-size:11px;color:#25814d}.sla-copy b{display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:currentColor}.sla-copy.warning{color:#a96d00}.sla-copy.breached{color:#d52e3d}.unassigned{color:#ab6400;font-weight:600}.update-copy{color:#77859a;font-size:11px}.row-arrow{font-size:19px;color:#93a0b2}.proposal-empty{padding:54px;text-align:center}.proposal-empty strong,.proposal-empty span{display:block}.proposal-empty span{color:#8491a6;margin-top:5px}@media(max-width:1050px){.proposal-table-head,.proposal-ticket-row{grid-template-columns:minmax(280px,2fr) 120px 150px 18px}.proposal-table-head span:nth-child(4),.proposal-table-head span:nth-child(5),.proposal-ticket-row>span:nth-last-child(3),.proposal-ticket-row>span:nth-last-child(2){display:none}}@media(max-width:700px){.proposal-table-head{display:none}.proposal-ticket-row{grid-template-columns:1fr auto;gap:10px;padding:16px 18px}.proposal-ticket-name{padding-left:14px}.proposal-ticket-row>span:not(.proposal-ticket-name):not(.status-pill):not(.row-arrow),.proposal-ticket-row .sla-copy,.proposal-ticket-row>span:nth-last-child(3),.proposal-ticket-row>span:nth-last-child(2){display:none}}
+.proposal-ticket-row.waiting-response-highlight {
+  background-color: rgba(0, 102, 204, 0.02);
+  box-shadow: inset 3px 0 0 0 #0066CC;
+}
+.proposal-ticket-row.waiting-response-highlight:hover {
+  background-color: rgba(0, 102, 204, 0.04) !important;
+}
+
+/* Tickets recién creados (Pendiente + sin responsable) — se resaltan con un
+   tono ámbar distinto del azul de "esperando respuesta" para que no se
+   confundan como el mismo tipo de alerta; son cosas distintas: uno es "nadie
+   lo ha tomado todavía", el otro es "ya se está trabajando, toca esperar". */
+.proposal-ticket-row.new-unassigned-highlight {
+  background-color: rgba(217, 119, 6, 0.04);
+  box-shadow: inset 3px 0 0 0 #d97706;
+}
+.proposal-ticket-row.new-unassigned-highlight:hover {
+  background-color: rgba(217, 119, 6, 0.07) !important;
+}
+.status-pill.status-new-unassigned {
+  background: #fef3e2;
+  color: #9a5b00;
+}

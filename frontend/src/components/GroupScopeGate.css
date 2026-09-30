@@ -1,0 +1,131 @@
+/* ── Group scoping gate (Volcán Desk config domains) ──────────────────── */
+.gsg-picker-hint {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    margin: 0 0 20px;
+}
+
+.gsg-group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+}
+
+.gsg-group-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--transition-base, 0.15s);
+    width: 100%;
+}
+
+.gsg-group-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.gsg-group-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 102, 204, 0.1);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.gsg-group-body { flex: 1; min-width: 0; }
+
+.gsg-group-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+}
+
+.gsg-group-count {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+}
+
+.gsg-group-arrow { color: var(--color-text-muted); flex-shrink: 0; }
+
+.gsg-empty {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    padding: 16px;
+    border: 1px dashed var(--glass-border);
+    border-radius: var(--radius-md);
+    grid-column: 1 / -1;
+}
+
+.gsg-unassigned-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: var(--radius-md);
+    color: #b45309;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+}
+
+.gsg-unassigned-banner span { flex: 1; }
+
+.gsg-change-group-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    color: var(--color-text-secondary, var(--color-text-primary));
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
+.gsg-change-group-btn:hover { border-color: var(--color-primary); }
+.gsg-change-link { color: var(--color-primary); font-weight: 600; }
+
+.gsg-reassign-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.gsg-reassign-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+}
+
+.gsg-reassign-label { font-weight: 600; font-size: 0.85rem; color: var(--color-text-primary); }
+
+.gsg-reassign-row select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--glass-border);
+    font-size: 0.8rem;
+}

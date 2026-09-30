@@ -1,0 +1,88 @@
+/* Mismo tratamiento que .kboard-scroll en KanbanBoard.css (ya probado y
+   funcionando ahí) — dos intentos anteriores (2026-09-07) con solo
+   overflow:auto/min-width:0 seguían sin verse: hacía falta también un
+   width/max-width:100% explícito (sin eso, el ancho intrínseco de las filas
+   de 900px+ podía seguir empujando hacia el padre en vez de quedarse acotado
+   aquí) y, sobre todo, FORZAR la barra de scroll a visible — Windows/Chrome la
+   esconde por default (estilo "overlay", solo aparece al pasar el mouse
+   encima de la zona exacta), así que aunque el scroll funcionara, no había
+   ninguna pista visual de que existiera. */
+.ticket-table-container{background:#fff;border:1px solid #dfe5ee;border-radius:10px;overflow:auto;min-width:0;width:100%;max-width:100%;box-sizing:border-box}
+.ticket-table-container::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+.ticket-table-container::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary, #f1f5f9);
+  border-radius: 6px;
+}
+.ticket-table-container::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted, #94a3b8);
+  border-radius: 6px;
+}
+.ticket-table-container {
+  scrollbar-width: thin;
+}.proposal-table-head,.proposal-ticket-row{display:grid;grid-template-columns:minmax(320px,2.4fr) 130px 170px 135px 110px 18px;align-items:center}.proposal-table-head{height:40px;padding:0 18px;color:#8491a6;background:#fbfcfe;border-bottom:1px solid #dfe5ee;text-transform:uppercase;letter-spacing:.04em;font-size:10px;font-weight:700}.proposal-ticket-row{width:100%;min-height:76px;padding:0 18px;background:#fff;border:0;border-bottom:1px solid #e5eaf1;text-align:left;color:#40506a;font:inherit;cursor:pointer;position:relative}.proposal-ticket-row:last-child{border-bottom:0}.proposal-ticket-row:hover{background:#f8faff}.priority-mark{position:absolute;left:19px;width:7px;height:7px;border-radius:50%;background:#d49a00}.priority-mark.urgent{background:#d73543}.priority-mark.high{background:#d57a00}.priority-mark.low{background:#8b97a9}.proposal-ticket-name{padding-left:0px}.proposal-ticket-name strong{display:block;color:#162033;font-size:12px;margin-bottom:6px}.proposal-ticket-name small{display:block;color:#8592a6;font-size:10px}.status-pill{display:inline-block;font-style:normal;font-size:10px;font-weight:700;padding:6px 9px;border-radius:6px;background:#edf4ff;color:#1664c9}.status-in-progress{background:#fff3dd;color:#955c00}.status-resolved{background:#eaf8f0;color:#237a48}.status-closed{background:#f0f0f5;color:#5b597b}.sla-copy{font-size:11px;color:#25814d}.sla-copy b{display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:currentColor}.sla-copy.warning{color:#a96d00}.sla-copy.breached{color:#d52e3d}.unassigned{color:#ab6400;font-weight:600}.update-copy{color:#77859a;font-size:11px}.row-arrow{font-size:19px;color:#93a0b2}.proposal-empty{padding:54px;text-align:center}.proposal-empty strong,.proposal-empty span{display:block}.proposal-empty span{color:#8491a6;margin-top:5px}@media(max-width:1050px){.proposal-table-head,.proposal-ticket-row{grid-template-columns:minmax(280px,2fr) 120px 150px 18px}.proposal-table-head span:nth-child(4),.proposal-table-head span:nth-child(5),.proposal-ticket-row>span:nth-last-child(3),.proposal-ticket-row>span:nth-last-child(2){display:none}}@media(max-width:700px){.proposal-table-head{display:none}.proposal-ticket-row{grid-template-columns:1fr auto;gap:10px;padding:16px 18px}.proposal-ticket-name{padding-left:14px}.proposal-ticket-row>span:not(.proposal-ticket-name):not(.status-pill):not(.row-arrow),.proposal-ticket-row .sla-copy,.proposal-ticket-row>span:nth-last-child(3),.proposal-ticket-row>span:nth-last-child(2){display:none}}
+
+
+
+/* Tickets recién creados (Pendiente + sin responsable) — se resaltan con un
+   tono ámbar distinto del azul de "esperando respuesta" para que no se
+   confundan como el mismo tipo de alerta; son cosas distintas: uno es "nadie
+   lo ha tomado todavía", el otro es "ya se está trabajando, toca esperar". */
+
+
+.status-pill.status-new-unassigned {
+  background: #fef3e2;
+  color: #9a5b00;
+}
+
+.proposal-ticket-row.action-required-highlight {
+  background-color: rgba(34, 197, 94, 0.04);
+  box-shadow: inset 3px 0 0 0 #22c55e;
+}
+.proposal-ticket-row.action-required-highlight:hover {
+  background-color: rgba(34, 197, 94, 0.08) !important;
+}
+
+/* Ticket bloqueado/pausado — se desvanece en vez de usar otro color de
+   resaltado, para que se note de un vistazo que está en pausa sin competir
+   visualmente con los que sí necesitan acción. */
+.proposal-ticket-row.row-paused {
+  opacity: 0.5;
+}
+.proposal-ticket-row.row-paused:hover {
+  opacity: 0.85;
+}
+.sla-copy.sla-paused {
+  color: #dc2626 !important;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+/* La vista "Todos" de Volcán Desk unificó las columnas a un set de 11 que no
+   cabe en pantallas chicas (ej. una laptop). El scroll horizontal vive
+   directamente en .ticket-table-container (ver su regla arriba: overflow:auto
+   + min-width:0) — un wrapper interno aparte se probó primero (2026-09-07)
+   pero su propia barra de scroll quedaba al fondo de TODAS las filas,
+   invisible/inalcanzable en pantallas chicas sin bajar primero toda la
+   página; puesto aquí, la barra queda dentro del alto visible siempre
+   (.ticket-table-container ya está acotado por flex:1 al alto disponible,
+   heredado de Tickets.css). */
+.proposal-table-head,
+.proposal-ticket-row {
+  min-width: 900px;
+  /* Antes el overflow:hidden recortaba en silencio cualquier contenido que no
+     cupiera en su celda (ej. el texto del SLA envolviendo a una segunda
+     línea) — al quitarlo para permitir el scroll horizontal, ese desborde se
+     volvió visible, "derramándose" fuera de la fila (reportado en vivo
+     2026-09-07). Se repone aquí, por fila, para que nada se salga de su celda
+     sin bloquear el scroll de .ticket-table-container. */
+  overflow: hidden;
+}
+.sla-copy {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

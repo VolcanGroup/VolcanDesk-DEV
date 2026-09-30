@@ -1,0 +1,1516 @@
+.ticket-detail-wrapper {
+    display: flex;
+    height: calc(100vh - 76px);
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.ticket-main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 24px;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.ticket-header-actions {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* Botones de la barra fija superior — 4 estilos (2026-09-18, a pedido del
+   usuario): sólido verde WhatsApp (Respuesta pública), crema/ámbar (Nota
+   interna), y neutro blanco/gris para el resto (Volver, Apoyo, Copiar
+   enlace). Antes todos se veían iguales (gris neutro), sin jerarquía visual. */
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    padding: 8px 14px;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.back-button:hover {
+    background: #F9FAFB;
+    border-color: #D1D5DB;
+}
+
+.conversation-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    /* Título/breadcrumb/stepper/pestañas viven aquí ahora también (2026-09-18,
+       ver arriba) — el padding se mueve al contenedor completo en vez de
+       quedarse solo en .conversation-thread, que antes era el único hijo con
+       aire alrededor y dejaba ese encabezado pegado al borde. */
+    padding: 16px 20px 0 20px;
+    background: #ffffff;
+    /* Custom scrollbar */
+}
+
+.conversation-scroll-area::-webkit-scrollbar {
+    width: 6px;
+}
+.conversation-scroll-area::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+}
+
+.ticket-title-large {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.conversation-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    /* Izq/der ahora vienen de .conversation-scroll-area (su padre) — ver arriba. */
+    padding: 8px 0 80px 0;
+}
+
+/* Bubbles */
+.message-bubble {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    position: relative;
+}
+
+.message-bubble.initial-message {
+    border-left: 4px solid var(--color-primary);
+}
+
+.message-bubble.private-note {
+    background: rgba(245, 158, 11, 0.05);
+    border: 1px solid var(--color-warning);
+}
+
+.message-bubble.collapsed .message-body,
+.message-bubble.collapsed .message-attachments {
+    display: none;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.message-author-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.author-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+}
+
+.message-body {
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    word-break: break-word;
+}
+
+.message-attachments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.attachment-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: var(--color-bg-tertiary);
+    /* Nunca heredaba color propio — dentro de un mensaje propio (.msg-bubble-blue,
+       más abajo, texto blanco) el texto quedaba blanco sobre este mismo fondo
+       gris claro, prácticamente invisible (reportado en vivo 2026-09-07). */
+    color: var(--color-text-primary);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.attachment-pill:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-primary);
+}
+
+/* Adjuntos de imagen (capturas de pantalla, fotos): thumbnail en vez del ícono
+   genérico de clip, para que se note de un vistazo que se puede previsualizar
+   en vez de solo descargar (2026-09-08, reportado en vivo). */
+.attachment-pill-image {
+    padding: 4px 12px 4px 4px;
+}
+.attachment-thumb {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+.attachment-preview-image {
+    display: block;
+    max-width: 100%;
+    max-height: 78vh;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+.author-role-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.author-role-badge.exec-badge {
+    background-color: rgba(0, 102, 204, 0.12); /* Light primary */
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 102, 204, 0.2);
+}
+
+.author-role-badge.note-badge {
+    background-color: rgba(245, 158, 11, 0.15); /* Light warning */
+    color: #b45309; /* Dark orange */
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* FAB */
+.fab-reply {
+    position: absolute;
+    bottom: 24px;
+    right: 300px; /* Keep away from sidebar */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    z-index: 100;
+}
+
+.fab-reply:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.6);
+    background: #2563eb;
+}
+
+/* Compositor de respuesta — antes era una capa de pantalla completa tapando
+   la conversación (position:fixed + backdrop oscuro), pero eso obligaba a
+   cerrarla para poder scrollear el hilo y consultar algo mientras se escribe,
+   perdiendo lo ya tecleado (reportado en vivo 2026-09-23: "si estoy
+   escribiendo y pierdo el hilo debo cerrar la ventana... y volver a capturar
+   todo"). Ahora .reply-overlay es simplemente el hermano de
+   .conversation-scroll-area dentro de .ticket-main-content (que ya es
+   flex-column) — mismo patrón que WhatsApp Web/Slack: el compositor queda
+   anclado abajo, y el hilo de arriba conserva su propio scroll independiente
+   y sigue visible en todo momento mientras se responde. */
+.reply-overlay {
+    flex-shrink: 0;
+}
+
+.reply-panel {
+    background: var(--color-bg-primary);
+    width: 100%;
+    max-height: 46vh;
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -6px 24px rgba(0,0,0,0.08);
+    overflow-y: auto;
+    animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Barra compacta (rediseño 2026-09-24) — reemplaza la tarjeta fija de
+   ~400px de antes. En reposo mide lo que ocupe una sola línea de texto
+   (~54px con paddings); el editor de RichTextEditor (modo compact) crece
+   solo hasta 140px antes de scrollear internamente, así que el panel entero
+   ya no compite por la mayoría de la pantalla como antes. */
+.reply-panel-compact {
+    max-height: none;
+    overflow: visible;
+    padding: 10px 16px 8px;
+    gap: 6px;
+}
+.reply-panel-compact.note-mode {
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.reply-bar-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Toggle segmentado tipo píldora — reemplaza las dos pestañas grandes con
+   borde propio de antes. */
+.reply-pill-toggle {
+    display: flex;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    padding: 2px;
+    flex-shrink: 0;
+}
+
+.reply-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.reply-pill.active {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.reply-pill.reply-pill-note.active {
+    background: var(--color-warning);
+    color: #000;
+}
+
+.reply-visibility-hint {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.76rem;
+    color: var(--color-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reply-close-btn {
+    flex-shrink: 0;
+}
+
+.reply-editor-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.reply-editor-container .rte-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Botón de enviar circular estilo WhatsApp (verde esmeralda) — icono solo,
+   a la derecha de la fila de input+accesos rápidos. Reemplaza al botón de
+   texto "Enviar Respuesta"/"Guardar Nota" que antes vivía en un pie aparte. */
+.reply-send-circle {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #00A884;
+    color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-bottom: 4px;
+}
+.reply-send-circle:hover:not(:disabled) {
+    background: #008F6F;
+}
+.reply-send-circle:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+.reply-panel-compact.note-mode .reply-send-circle {
+    background: var(--color-warning);
+    color: #000;
+}
+
+.reply-footer-hint {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    padding-left: 2px;
+}
+
+/* Sidebar Right */
+.ticket-sidebar-right {
+    width: 280px;
+    border-left: 1px solid var(--glass-border);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background: var(--color-bg-secondary);
+    overflow-y: auto;
+}
+
+/* Campo con un cambio en borrador — mismo control, borde/fondo distinto para
+   que sea evidente que ese valor aún no se guardó (2026-09-10). */
+.property-select.has-pending-change {
+    border-color: var(--color-warning);
+    background: rgba(245, 158, 11, 0.06);
+    box-shadow: 0 0 0 1px var(--color-warning);
+}
+.blocked-toggle.has-pending-change {
+    box-shadow: 0 0 0 1px var(--color-warning);
+    border-radius: var(--radius-md);
+}
+.pending-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-warning);
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+/* Barra de confirmación — pegada al fondo visible del panel (que tiene su
+   propio scroll), incluso si hay más secciones abajo. */
+.sidebar-save-bar {
+    position: sticky;
+    bottom: -24px;
+    margin: auto -24px -24px;
+    padding: 12px 24px;
+    background: var(--color-bg-primary);
+    border-top: 1px solid var(--glass-border);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 5;
+}
+.sidebar-save-bar-text {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-warning);
+}
+.sidebar-save-bar-actions {
+    display: flex;
+    gap: 8px;
+}
+.sidebar-save-bar-actions .btn {
+    flex: 1;
+}
+
+.property-group label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.06em;
+}
+
+.property-select {
+    width: 100%;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--glass-border);
+    color: var(--color-text-primary);
+    font-weight: 500;
+    padding: 10px 12px;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+.property-select:hover { border-color: var(--color-text-muted); }
+.property-select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.12); }
+
+.property-divider {
+    height: 1px;
+    background: var(--glass-border);
+    margin: 8px 0;
+}
+
+/* ─── Requester Card ─── */
+.requester-card {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.requester-card-title {
+    font-size: 0.70rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+}
+
+.requester-avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.requester-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.requester-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.requester-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+}
+
+.requester-role-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(0, 102, 204, 0.10);
+    color: var(--color-primary);
+    border-radius: 10px;
+    padding: 2px 8px;
+    margin-top: 3px;
+}
+
+.requester-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 12px;
+}
+
+.requester-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rf-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+}
+
+.rf-value {
+    font-size: 0.82rem;
+    color: var(--color-text-primary);
+    word-break: break-word;
+}
+
+.rf-company {
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+/* ─── Activity Button ─── */
+.ticket-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.activity-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.activity-btn:hover {
+    background: #F9FAFB;
+    border-color: #D1D5DB;
+}
+
+/* "Ver Actividad" activo — se queda dentro de la misma paleta neutra (nada
+   de azul saturado), solo un gris más marcado para notar que está encendido. */
+.activity-btn.active {
+    background: #F3F4F6;
+    border-color: #9CA3AF;
+    color: #374151;
+}
+
+.activity-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: var(--color-primary);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 50%;
+}
+
+/* ─── Pestañas Conversación / Actividad (Volcán Desk) ─── */
+.ticket-tabs-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 10px;
+}
+
+.ticket-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 4px;
+    margin-right: 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.ticket-tab-btn:hover {
+    color: var(--color-text-primary);
+}
+
+.ticket-tab-btn.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+/* ─── Activity Panel ─── */
+.activity-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 340px;
+    height: 100%;
+    background: var(--color-bg-secondary);
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.06);
+    animation: slideInLeft 0.2s ease-out;
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-20px); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+}
+
+.activity-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--glass-border);
+    flex-shrink: 0;
+}
+
+.activity-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+}
+
+.activity-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    transition: all 0.15s;
+    width: auto;
+}
+
+.activity-close-btn:hover {
+    background: var(--color-bg-hover);
+    color: var(--color-text-primary);
+}
+
+.activity-timeline {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.activity-empty {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    padding: 32px 0;
+    font-style: italic;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon-wrap {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+}
+
+.activity-item.activity-created .activity-icon-wrap     { background: rgba(0,102,204,0.12); color: var(--color-primary); }
+.activity-item.activity-status_change .activity-icon-wrap { background: rgba(16,185,129,0.12); color: #10b981; }
+.activity-item.activity-assignee_change .activity-icon-wrap { background: rgba(88,86,214,0.12); color: #5856d6; }
+.activity-item.activity-comment .activity-icon-wrap     { background: rgba(0,0,0,0.06); color: var(--color-text-secondary); }
+.activity-item.activity-note .activity-icon-wrap        { background: rgba(245,158,11,0.12); color: #f59e0b; }
+
+.activity-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-desc {
+    font-size: 0.82rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+}
+
+.activity-time {
+    font-size: 0.70rem;
+    color: var(--color-text-muted);
+    margin-top: 3px;
+}
+
+.act-status-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 1px 7px;
+}
+
+/* Color distinction for message bubbles */
+.message-bubble.message-client {
+    background: #f8fafc;
+    border-left: 4px solid #94a3b8;
+    margin-right: 80px;
+    margin-left: 0;
+}
+
+.message-bubble.message-internal {
+    background: rgba(18, 103, 232, 0.03);
+    border: 1px dashed rgba(18, 103, 232, 0.2);
+    border-left: 4px solid #1267e8;
+    margin-left: 80px;
+    margin-right: 0;
+}
+
+.message-bubble.message-internal.private-note {
+    background: rgba(245, 158, 11, 0.05);
+    border: 1px solid var(--color-warning);
+    border-left: 4px solid var(--color-warning);
+    margin-left: 80px;
+    margin-right: 0;
+}
+
+.ticket-sidebar-right::-webkit-scrollbar,
+.activity-timeline::-webkit-scrollbar,
+.sidebar-nav::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ticket-sidebar-right::-webkit-scrollbar-thumb,
+.activity-timeline::-webkit-scrollbar-thumb,
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+}
+
+/* ─── Sidebar sections (colapsables) ─── */
+.sidebar-section {
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.sidebar-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: background 0.15s, opacity 0.15s;
+    text-align: left;
+}
+.sidebar-section-header:hover { background: var(--color-bg-hover); }
+
+.sidebar-section.is-closed .sidebar-section-header {
+    opacity: 0.55;
+    background: transparent;
+}
+.sidebar-section.is-closed .sidebar-section-header:hover {
+    opacity: 0.8;
+}
+
+.sidebar-section.is-open .sidebar-section-header {
+    background: rgba(0, 102, 204, 0.05);
+}
+
+/* Cápsula azul (mismo azul de las burbujas de conversación) sobre la sección
+   activa — para que sea evidente de un vistazo en qué parte del panel se está
+   navegando, no solo un texto un poco más oscuro que el resto. */
+.sidebar-section.is-open .sidebar-section-title {
+    color: #fff;
+    background: var(--color-primary);
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 12px;
+}
+
+.sidebar-section-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-text-muted);
+    transition: color 0.15s, background 0.15s;
+}
+
+.sidebar-section-body {
+    padding: 0 16px 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.property-group { display: flex; flex-direction: column; gap: 4px; }
+
+.prop-readonly {
+    font-size: 0.85rem;
+    color: var(--color-text-primary);
+    padding: 5px 0;
+    line-height: 1.4;
+}
+
+/* ─── Click-to-edit ─── */
+.cte-wrap { position: relative; }
+
+.cte-readonly {
+    font-size: 0.85rem;
+    color: var(--color-text-primary);
+    padding: 5px 0;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cte-clickable {
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    padding: 4px 6px;
+    margin: -4px -6px;
+    transition: background 0.15s;
+}
+.cte-clickable:hover { background: var(--color-bg-hover); }
+
+.cte-icon {
+    opacity: 0;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+}
+.cte-clickable:hover .cte-icon { opacity: 1; }
+
+.cte-empty { color: var(--color-text-muted); font-style: italic; font-size: 0.8rem; }
+
+/* ─── SLA block ─── */
+.sla-block {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+.sla-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 0.72rem; margin-bottom: 8px;
+}
+.sla-label { color: var(--color-text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; }
+.sla-pct { font-weight: 800; font-size: 1.15rem; }
+.sla-bar-track {
+    width: 100%; height: 6px;
+    background: var(--color-bg-tertiary); border-radius: 999px; overflow: hidden;
+}
+.sla-bar-fill { height: 100%; border-radius: 999px; transition: width 0.3s; }
+.sla-time { font-size: 0.7rem; color: var(--color-text-muted); margin-top: 6px; text-align: right; }
+
+/* ─── Blocked toggle ─── */
+.blocked-toggle-wrap { display: flex; flex-direction: column; gap: 4px; }
+
+.blocked-toggle {
+    display: flex; flex-direction: column; gap: 3px;
+    cursor: pointer;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    background: var(--color-bg-primary);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: all 0.15s;
+}
+.blocked-toggle.is-blocked {
+    border-color: var(--color-warning);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.bt-switch-row {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 0.83rem; font-weight: 600; color: var(--color-text-primary);
+}
+
+.bt-sla-warn {
+    font-size: 0.72rem; font-weight: 700;
+    color: var(--color-warning); margin-left: 22px;
+}
+
+.blocked-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.78rem; font-weight: 600;
+    color: var(--color-warning);
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 5px 8px;
+}
+
+/* ─── Requester compact ─── */
+.requester-compact {
+    display: flex; align-items: flex-start; gap: 10px;
+}
+.rc-avatar {
+    width: 36px; height: 36px; min-width: 36px;
+    border-radius: 50%; background: var(--color-primary);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem; color: white;
+    overflow: hidden; flex-shrink: 0;
+}
+.rc-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.rc-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rc-name { font-weight: 600; font-size: 0.88rem; color: var(--color-text-primary); }
+.rc-meta { font-size: 0.72rem; color: var(--color-text-muted); }
+.rc-email { font-size: 0.72rem; color: var(--color-primary); word-break: break-all; }
+.rc-date { font-size: 0.7rem; color: var(--color-text-muted); margin-top: 2px; }
+
+/* ─── Más acciones ─── */
+.more-actions-wrap {
+    padding: 12px 16px;
+    position: relative;
+    margin-top: auto;
+    border-top: 1px solid var(--glass-border);
+}
+
+.more-actions-btn {
+    display: flex; align-items: center; gap: 6px;
+    width: 100%;
+    padding: 7px 10px;
+    background: none;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    justify-content: center;
+}
+.more-actions-btn:hover { background: var(--color-bg-hover); color: var(--color-text-primary); border-color: var(--color-text-muted); }
+
+.more-actions-menu {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 16px; right: 16px;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    z-index: 200;
+    overflow: hidden;
+    animation: fadeIn 0.15s ease-out;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.ma-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    width: 100%; padding: 9px 14px;
+    background: none; border: none;
+    font-size: 0.82rem; color: var(--color-text-primary);
+    cursor: pointer; text-align: left;
+    transition: background 0.12s;
+}
+.ma-item:hover { background: var(--color-bg-hover); }
+.ma-item-danger:hover { background: rgba(239, 68, 68, 0.06); color: var(--color-error); }
+.ma-item-icon { flex-shrink: 0; margin-top: 2px; }
+.ma-item-text { display: flex; flex-direction: column; gap: 1px; }
+.ma-item-label { font-weight: 500; }
+.ma-item-sub { font-size: 0.71rem; color: var(--color-text-muted); }
+.ma-divider { height: 1px; background: var(--glass-border); margin: 4px 0; }
+
+/* ─── Modals ─── */
+.modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+}
+.modal-box {
+    background: var(--color-bg-primary);
+    width: 90%; max-width: 480px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    overflow: hidden;
+    animation: slideUp 0.2s ease-out;
+}
+@keyframes slideUp { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--glass-border);
+    background: var(--color-bg-secondary);
+}
+.modal-header h3 { font-size: 1rem; font-weight: 700; margin: 0; }
+
+.modal-desc {
+    padding: 14px 20px 0 20px;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.modal-warning {
+    display: flex; align-items: flex-start; gap: 8px;
+    margin: 14px 20px 0 20px;
+    padding: 10px 12px;
+    background: rgba(239, 68, 68, 0.06);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-sm);
+    font-size: 0.83rem;
+    color: var(--color-error);
+    line-height: 1.5;
+}
+
+.modal-field {
+    padding: 12px 20px 0 20px;
+    display: flex; flex-direction: column; gap: 5px;
+}
+.modal-field label {
+    font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+}
+
+.modal-footer {
+    display: flex; justify-content: flex-end; gap: 10px;
+    padding: 16px 20px;
+    border-top: 1px solid var(--glass-border);
+    margin-top: 16px;
+    background: var(--color-bg-secondary);
+}
+
+/* Danger button */
+.btn-danger {
+    background: var(--color-error) !important;
+    color: white !important;
+    border-color: var(--color-error) !important;
+}
+.btn-danger:disabled { opacity: 0.5; }
+
+/* ─── Encabezado compacto del ticket (conversación en burbujas) ─── */
+.ticket-conv-header {
+    margin: 0 0 12px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--glass-border);
+    flex-shrink: 0;
+}
+.ticket-conv-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+.ticket-conv-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+}
+.tcm-id { font-weight: 600; color: var(--color-primary); }
+.tcm-sep { color: var(--color-text-muted); opacity: 0.5; }
+.tcm-arrow { color: var(--color-text-muted); margin: 0 2px; }
+
+/* ─── Barra de acciones rápidas ─── */
+.ticket-top-toolbar {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 12px 0;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--glass-border);
+    border-radius: 6px;
+    padding: 8px 14px;
+}
+.toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.toolbar-btn:hover { background: #F9FAFB; border-color: #D1D5DB; }
+
+/* Respuesta pública — sólido, verde WhatsApp corporativo. */
+.toolbar-btn.primary-btn {
+    background: #005C4B;
+    border-color: #005C4B;
+    color: #FFFFFF;
+}
+.toolbar-btn.primary-btn:hover { background: #004739; border-color: #004739; }
+
+/* Nota interna — crema/ámbar suave, para distinguirla como "modo distinto"
+   sin ser un botón de alerta. */
+.toolbar-btn.note-btn {
+    background: #FEF9E7;
+    border-color: #FDE68A;
+    color: #92400E;
+}
+.toolbar-btn.note-btn:hover { background: #FDF3C7; border-color: #FCD34D; }
+
+/* ─── Conversación en burbujas de chat ─── */
+.msg-row { display: flex; flex-direction: column; gap: 4px; max-width: 85%; }
+.msg-initial-card { max-width: 100%; width: 100%; margin-bottom: 24px; }
+.msg-initial-card .msg-bubble { background: #ffffff; border: 1px solid var(--glass-border); border-radius: 14px; width: 100%; box-sizing: border-box; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
+.msg-left { align-self: flex-start; }
+.msg-right { align-self: flex-end; }
+.msg-top { display: flex; align-items: center; gap: 8px; padding: 0 4px; }
+/* El color de fondo/texto real ahora viene por style inline (paleta por
+   participante, ver getParticipantColor en TicketDetailView.jsx) — estos son
+   solo el fallback si por lo que sea no hay userId (ej. "Cliente" genérico). */
+.msg-avatar { width: 28px; height: 28px; min-width: 28px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.68rem; color: #475569; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08); }
+.msg-author { font-weight: 700; font-size: 0.8rem; color: #0f172a; }
+/* Colores de burbuja "estilo WhatsApp" (2026-09-18): entrante (solicitante)
+   gris claro, saliente (resolutor, .msg-bubble-blue — nombre de clase viejo,
+   ya no es azul) verde suave. El nombre de la clase se deja igual a
+   propósito para no tocar el JSX innecesariamente. */
+.msg-bubble { background: #F0F2F5; border-radius: 14px; padding: 14px 16px; color: #111B21; position: relative; border: 1px solid #E2E8F0; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); cursor: pointer; }
+.msg-left .msg-bubble { border-top-left-radius: 4px; }
+.msg-right .msg-bubble { border-top-right-radius: 4px; }
+.msg-bubble-blue { background: #D9FDD3; color: #111B21; border-color: #BCE8B5; }
+.msg-bubble-blue .msg-body { color: #111B21; }
+.msg-bubble-blue .msg-bubble-footer { color: #667781; }
+
+/* Colas de burbuja (triángulo CSS, ancladas a la esquina "recta" que ya
+   generan border-top-left-radius/border-top-right-radius arriba) — excluye
+   .msg-initial-card, que usa .msg-bubble a ancho completo sin esquina recta. */
+.msg-left:not(.msg-initial-card) .msg-bubble::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -7px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 8px 8px 0;
+    border-color: transparent #F0F2F5 transparent transparent;
+}
+.msg-right .msg-bubble::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -7px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 8px 8px;
+    border-color: transparent transparent transparent #D9FDD3;
+}
+
+/* Indicador de lectura (doble check) — solo en burbujas salientes. Gris =
+   enviado, azul = leído (aproximado desde ticket.visto_por_agente/cliente a
+   nivel ticket, no hay estado de lectura por mensaje individual en el
+   modelo de datos). */
+/* Píldora de fecha centrada (agrupa mensajes por día). */
+.msg-date-pill-row { display: flex; justify-content: center; margin: 4px 0 12px; }
+.msg-date-pill { background: #F1F5F9; border: 1px solid var(--glass-border); border-radius: 999px; padding: 4px 14px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em; color: var(--color-text-muted); text-transform: uppercase; }
+/* .msg-center por sí solo (estampas/avisos del sistema): compacto, ajustado a
+   su contenido — una píldora, no una barra. .msg-note.msg-center (notas
+   internas, que sí necesitan espacio para texto largo) mantiene el ancho
+   generoso de antes. */
+.msg-center { align-self: center; width: auto; max-width: 90%; margin-top: 12px; margin-bottom: 12px; }
+.msg-note.msg-center { width: 85%; max-width: 800px; }
+
+/* Notas internas — estilo "estampado nativo de WhatsApp" (2026-09-18, a
+   pedido del usuario): tarjeta blanca plana, sin marco de color, sombra
+   mínima; el único identificador es el chip neutro de arriba (NOTA
+   INTERNA/CONSULTA DE APOYO + candado). Antes cada tipo de nota tenía su
+   propio fondo/borde de color (ámbar genérico, azul para apoyo) — se quita
+   esa distinción, ambas se ven igual salvo el texto del chip. */
+.msg-note-container { display: flex; flex-direction: column; background: #FFFFFF; border: none; border-radius: 14px; padding: 14px 16px; width: 100%; box-shadow: 0 1px 0.5px rgba(11,20,26,0.13); }
+.msg-note-header { margin-bottom: 6px; }
+.msg-note-label { display: inline-flex; align-items: center; gap: 4px; font-size: 0.68rem; font-weight: 700; color: #667781; text-transform: uppercase; letter-spacing: 0.04em; background: #F0F2F5; border-radius: 999px; padding: 3px 10px; }
+
+.msg-note-apoyo .msg-note-label { color: #667781; }
+.msg-note-apoyo .msg-note-author { color: var(--color-text-primary); }
+
+/* ─── Línea de tiempo de avance (Pendiente → ... → Terminado) ─── */
+.progress-stepper {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    padding: 8px 10px 10px 10px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--glass-border);
+}
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+}
+.progress-step-node {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.progress-step-circle {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #d1d5db;
+    background: #fff;
+    color: #fff;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+.progress-step-dot { width: 8px; height: 8px; border-radius: 50%; }
+.progress-step-line {
+    flex: 1;
+    height: 2px;
+    background: #d1d5db;
+    min-width: 8px;
+}
+.progress-step.is-done .progress-step-circle { background: #10b981; border-color: #10b981; }
+.progress-step.is-done .progress-step-line { background: #10b981; }
+.progress-step.is-current .progress-step-circle { border-width: 3px; background: #fff; }
+.progress-step-label {
+    margin-top: 6px;
+    font-size: 0.68rem;
+    color: #94a3b8;
+    text-align: center;
+    line-height: 1.25;
+}
+.progress-step.is-done .progress-step-label { color: #10b981; font-weight: 600; }
+.progress-step.is-current .progress-step-label { font-weight: 700; }
+.msg-note-author { font-size: 0.8rem; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px; margin-top: 4px; }
+.msg-note-body { font-size: 0.85rem; color: var(--color-text-primary); line-height: 1.4; }
+.msg-note-container .msg-bubble-footer { color: #667781; }
+.msg-body { line-height: 1.5; word-break: break-word; font-size: 0.9rem; }
+
+/* Editar/eliminar dentro de 60s (2026-09-23) */
+.comment-action-error {
+    margin: 0 0 12px;
+    padding: 8px 12px;
+    background: #FEF2F2;
+    border: 1px solid #FCA5A5;
+    color: #B91C1C;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+}
+.comment-action-error.reply-composer-error {
+    margin: 8px 0 0;
+}
+.msg-deleted-body { font-style: italic; color: var(--color-text-muted); }
+.msg-edit-box { display: flex; flex-direction: column; gap: 8px; }
+/* Reusa el look de .quoted-reply (ya se ve así fuera de edición) — solo se
+   anula el cursor de "saltar al original" (aquí no hay handler para eso) y
+   el margen propio, ya que .msg-edit-box los separa con `gap`. */
+.msg-edit-quote { cursor: default; margin-bottom: 0; }
+.msg-edit-input {
+    min-height: 40px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 8px 10px;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    outline: none;
+}
+.msg-edit-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.msg-body p { margin-top: 0; margin-bottom: 8px; }
+.msg-body p:last-child { margin-bottom: 0; }
+/* El fix de listas de RichTextEditor.css (padding/margin/list-style) solo
+   aplica DENTRO del editor mientras se escribe — el mensaje ya guardado se
+   renderiza aquí, en .msg-body, que nunca tuvo su propio estilo de
+   ul/ol/li y se quedaba con las viñetas/números pegados al borde, sin
+   sangría (reportado en vivo 2026-09-18). */
+.msg-body ul,
+.msg-body ol {
+    padding-left: 22px;
+    margin: 4px 0 8px 0;
+}
+.msg-body ul { list-style-type: disc; }
+.msg-body ol { list-style-type: decimal; }
+.msg-body li { margin-bottom: 2px; }
+.msg-body ul:last-child,
+.msg-body ol:last-child { margin-bottom: 0; }
+.msg-bubble-footer { font-size: 0.68rem; color: #667781; text-align: right; margin-top: 6px; opacity: 0.8; }
+/* Ficha técnica de campos dinámicos (rediseño 2026-09-18) — tarjeta propia en
+   vez de una lista de texto plano apilada, para que se lea como un dato
+   estructurado y quede claro qué Categoría/Tipo la generó. */
+.msg-fields-card { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--glass-border); }
+.msg-fields-card-inner { border: 1px solid #E7E5E4; background: #FAFAF9; border-radius: 10px; padding: 12px; }
+.msg-fields-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1px solid rgba(231,229,228,0.7); }
+.msg-fields-title { font-size: 10.5px; font-weight: 700; color: #78716C; text-transform: uppercase; letter-spacing: 0.04em; }
+.msg-fields-subtitle { font-size: 10px; color: #A8A29E; font-weight: 500; }
+/* auto-fit hace que el grid se adapte solo a la cantidad de campos: 1 campo
+   ocupa todo el ancho (bloque destacado), varios se acomodan en columnas sin
+   necesidad de calcular el número de columnas a mano. */
+.msg-fields-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
+.msg-fields-item-label { display: block; font-size: 11px; font-weight: 500; color: #6B7280; text-transform: uppercase; letter-spacing: 0.03em; }
+.msg-fields-item-value { display: block; font-size: 13px; font-weight: 600; color: #111827; margin-top: 2px; word-break: break-word; }
+
+/* ─── Estampa de sistema/auditoría ("solicitar apoyo", "estimación HU") —
+   estilo "estampado nativo de WhatsApp" (2026-09-18, a pedido del usuario):
+   píldora centrada, neutra y translúcida, sin borde ni fondo saturado —
+   antes cada tipo tenía su propio color (azul para apoyo, rojo para HU) para
+   distinguirse; ahora ambas son iguales, sin esa distinción por color. */
+.msg-apoyo-stamp {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 6px 14px;
+    font-size: 11.5px;
+    font-weight: 500;
+    font-style: normal;
+    color: #667781;
+    background: #F0F2F5;
+    border: none;
+    border-radius: 999px;
+}
+.msg-apoyo-stamp > div { display: inline; }
+.msg-apoyo-stamp strong { font-style: normal; font-weight: 700; color: var(--color-text-primary); }
+
+.msg-hus-stamp {
+    color: #667781;
+    background: #F0F2F5;
+    border: none;
+}
+.msg-apoyo-time {
+    display: inline;
+    margin-top: 0;
+    font-size: 0.72rem;
+    font-style: normal;
+    color: inherit;
+    opacity: 0.75;
+}
+.msg-apoyo-time::before {
+    content: '•';
+    margin: 0 6px;
+    opacity: 0.6;
+}
+
+/* ─── Responder citando un mensaje (estilo WhatsApp) ─── */
+.msg-reply-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(22, 163, 74, 0.1);
+    border: none;
+    padding: 4px;
+    color: #16a34a;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.15s, transform 0.15s;
+}
+.msg-reply-btn:hover { background: rgba(22, 163, 74, 0.22); transform: scale(1.08); }
+
+/* Cita embebida dentro de un mensaje/nota ya enviado — clic para saltar al original */
+.quoted-reply {
+    border-left: 3px solid var(--color-primary);
+    background: rgba(0, 102, 204, 0.06);
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+/* .msg-bubble-blue es en realidad el bubble VERDE (#D9FDD3, ver arriba) pese
+   al nombre — estas reglas asumían un fondo oscuro y dejaban la cita en
+   blanco sobre blanco/casi invisible sobre el verde claro real. */
+.msg-bubble-blue .quoted-reply {
+    background: rgba(0, 0, 0, 0.06);
+    border-left-color: rgba(0, 0, 0, 0.35);
+}
+.quoted-reply-author {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+.msg-bubble-blue .quoted-reply-author { color: #0066CC; }
+.quoted-reply-text {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    opacity: 0.85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.msg-bubble-blue .quoted-reply-text { color: rgba(17,27,33,0.65); }
+
+/* Vista previa "respondiendo a..." mientras se compone la respuesta */
+.reply-quote-preview {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 20px 12px 20px;
+    padding: 8px 10px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-sm);
+}
+.reply-quote-bar { width: 3px; align-self: stretch; background: var(--color-primary); border-radius: 2px; }
+.reply-quote-content { flex: 1; min-width: 0; }
+.reply-quote-content .quoted-reply-text { display: block; }
+
+/* Resaltado breve al saltar a un mensaje citado */
+.msg-highlight-flash {
+    animation: msgHighlightFlash 1.6s ease-out;
+}
+@keyframes msgHighlightFlash {
+    0% { box-shadow: 0 0 0 3px var(--color-primary); }
+    100% { box-shadow: 0 0 0 0 transparent; }
+}
